@@ -2,7 +2,7 @@
 
 This is a NodeJS application built using ExpressJS, Mongoose, Puppeteer and an angular forntend. The goal of this open-source project is to build a web crawler equiped with a user interface. 
 
-![Image of Yaktocat](/front/src/assets/spider.svg)
+![Image](/public/images/spider.svg)
 
 ## Getting Started
 
@@ -26,7 +26,7 @@ At this point in time, this application works as follows: a spider needs to prov
 
 
 
-![flow](/front/src/assets/flow.png)
+![flow](/public/images/flow.png)
 
 ## Creating a Spider
 
@@ -48,20 +48,20 @@ Each spider can have a number of pipeliens. These are parts of code you add to m
 
 Homepage
 
-![flow](/front/src/assets/home.png)
+![flow](/public/images/home.png)
 
 Spiders
 
-![flow](/front/src/assets/spiders.png)
+![flow](/public/images/spiders.png)
 
 Creating a new spider
 
-![flow](/front/src/assets/newSpider.png)
+![flow](/public/images/newSpider.png)
 
 Pipelines
 
-![flow](/front/src/assets/pipelines.png)
+![flow](/public/images/pipelines.png)
 
 Creating a new pipeline
 
-![flow](/front/src/assets/pipelineEditor.png)
+![flow](/public/images/pipelineEditor.png)
