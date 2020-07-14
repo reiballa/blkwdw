@@ -1,0 +1,170 @@
+<div style="padding: 16px">
+  <div fxLayout="column" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="space-between center"
+      style="font-size: 26px;  width: 700px; border-bottom: 1px solid; padding-bottom: 10px;">
+      Spiders
+      <button *ngIf="whatToShow == 'list'" (click)="changeWhatToShow('form')"
+        style="border-radius: 0; border-color: #348807; font-family: 'IBM Plex Mono', monospace;; font-size: 20px"
+        mat-stroked-button>Add spider</button>
+      <button *ngIf="whatToShow == 'form'" (click)="changeWhatToShow('list')"
+        style="border-radius: 0; border-color: #348807; font-family: 'IBM Plex Mono', monospace;; font-size: 20px"
+        mat-stroked-button>Show list</button>
+    </div>
+  </div>
+  <br>
+
+  <div fxLayout="column" fxLayoutAlign="space-between center" *ngIf="whatToShow == 'list'">
+    <div *ngFor="let spider of spiders">
+      <div class="item" (click)="selectSpider(spider)" style="width: 700px; position: relative;" fxLayout="row"
+        fxLayoutAlign="space-between center">
+
+        <div>
+          {{spider.name}}
+        </div>
+
+        <div>
+          <mat-icon (click)="editItem(spider); $event.preventDefault()">edit</mat-icon>
+          <mat-icon (click)="deleteItem(spider); $event.preventDefault()" style="cursor: pointer;">delete</mat-icon>
+        </div>
+
+      </div>
+
+      <div *ngIf="selected?.name == spider.name && selected != null"
+        style="width: 700px; position: relative; border: 1px solid #348807; padding: 10px;" fxLayout="row wrap"
+        fxLayoutAlign="space-between center">
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+          <div>
+            Description: {{selected?.description}}
+          </div>
+          <div>
+            <button (click)="selectSpider(null)" matTooltip="Back" mat-icon-button>
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <!-- <ngx-monaco-editor  style="width: 700px;" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor> -->
+        </div>
+        <div fxFlex="100" *ngIf="whatToShowDetail == 'none'">
+          <div fxFlex="100" style="width: 700px; position: relative;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="padding-right: 8px; margin-bottom: 8px;">
+              Pipelines:
+              <button (click)="whatToShowDetail = 'pipeline'" mat-stroked-button>
+                add
+              </button>
+            </div>
+            <div (click)="showPipeline(pipeline)" class="item" *ngFor="let pipeline of selected?.pipelines" fxLayout="row" fxLayoutAlign="space-between center" style="padding-right: 8px;">
+              {{pipeline.name}}
+              <div>
+                <mat-icon style="cursor: pointer;">keyboard_arrow_up</mat-icon>
+                <mat-icon style="cursor: pointer;">keyboard_arrow_down</mat-icon>
+                <mat-icon style="cursor: pointer;">delete</mat-icon>
+              </div>
+            </div>
+
+          </div>
+          <!-- <div fxFlex="50" style="width: 700px; position: relative;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="padding-left: 8px;">
+              Sinks:
+              <button mat-stroked-button>
+                add
+              </button>
+            </div>
+          </div> -->
+        </div>
+
+
+        <div fxFlex="100" *ngIf="whatToShowDetail == 'pipeline'">
+          <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+            <div>
+              Add new pipeline
+              <input [(ngModel)]="pipelineName"
+                style="margin-left: 10px; background-color: black; border-top: none; border-left: none; 
+              border-right: none; color: white;border-bottom: 1px solid green; font-family: 'IBM Plex Mono', monospace;"
+                type="text" placeholder="enter name">
+            </div>
+
+            <div>
+              <button style="color: #348807;" (click)="savePipeline()" mat-button>save</button>
+              <button style="color: #348807;" (click)="closePipeline()" mat-button>back</button>
+            </div>
+          </div>
+
+          <div style="width: 100%;">
+            <ngx-monaco-editor style="width: 678px; height: 250px;" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+  <form [formGroup]="createForm" *ngIf="whatToShow == 'form'" (ngSubmit)="createItem(createForm.value)">
+    <div fxLayout="column" fxLayoutAlign="space-between center">
+      <div style="width: 700px">
+        Add new spider
+      </div>
+      <br>
+      <mat-form-field style="width: 700px; font-family: 'IBM Plex Mono', monospace;;">
+        <input formControlName="name" matInput placeholder="Name">
+      </mat-form-field>
+      <mat-form-field style="width: 700px; font-family: 'IBM Plex Mono', monospace;;">
+        <input formControlName="description" matInput placeholder="Description">
+      </mat-form-field>
+      <mat-form-field style="width: 700px; font-family: 'IBM Plex Mono', monospace;;">
+        <input formControlName="startUrl" matInput placeholder="Start URL">
+      </mat-form-field>
+      <mat-form-field style="width: 700px; font-family: 'IBM Plex Mono', monospace;;">
+        <input formControlName="itemSelector" matInput placeholder="Item URL Selector">
+      </mat-form-field>
+      <mat-form-field style="width: 700px; font-family: 'IBM Plex Mono', monospace;;">
+        <input formControlName="nextPageSelector" matInput placeholder="Next page Selector">
+      </mat-form-field>
+      <br>
+      <div style="width: 700px">
+        Item attributes
+      </div>
+      <br>
+
+      <div formArrayName="attributes" *ngFor="let attribute of createForm.get('attributes').controls; let i = index;">
+        <div [formGroupName]="i">
+          <div style="width: 700px" fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field style="width: 180px">
+              <input formControlName="name" matInput placeholder="Name">
+            </mat-form-field>
+            <mat-form-field style="width: 180px;">
+              <input formControlName="selector" matInput placeholder="Selector">
+            </mat-form-field>
+            <mat-form-field style="width: 180px;">
+              <input formControlName="infoToExtract" matInput placeholder="Info to extract">
+            </mat-form-field>
+            <mat-checkbox style="width: 100px;" formControlName="unique">Unique</mat-checkbox>
+
+          </div>
+        </div>
+
+      </div>
+
+      <br>
+      <br>
+      <div style="width: 700px;" fxLayout="row" fxLayoutAlign="space-between center">
+        <div style="width: 350px">
+          <button (click)="addAttribute(); $event.preventDefault()"
+            style="border-radius: 0; border-color: #348807; font-family: 'IBM Plex Mono', monospace;; font-size: 20px"
+            mat-stroked-button>
+            Add attribute
+          </button>
+        </div>
+        <div style="width: 350px">
+          <button type="submit"
+            style="border-radius: 0; float: right; border-color: #348807; font-family: 'IBM Plex Mono', monospace;; font-size: 20px"
+            mat-stroked-button>
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

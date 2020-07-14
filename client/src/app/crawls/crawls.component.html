@@ -1,0 +1,55 @@
+<div style="padding: 16px">
+  <div fxLayout="column" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="space-between center"
+      style="font-size: 26px;  width: 700px; border-bottom: 1px solid; padding-bottom: 10px;">
+      Crawls
+    </div>
+  </div>
+  <br>
+  <div fxLayout="column" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 700px;">
+      <div style="margin-top: 8px;">
+        <mat-form-field style="width: 445px;">
+          <mat-label>Select spider</mat-label>
+          <mat-select (selectionChange)="handleChanged($event)">
+            <mat-option *ngFor="let spider of spiders" [value]="spider">
+              {{spider.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxlayoyt="column">
+        <div>
+          <button (click)="fireTest()"
+            style="border-radius: 0; border-color: #348807; font-family: 'IBM Plex Mono', monospace;; font-size: 20px"
+            mat-stroked-button>Run test</button>&nbsp;&nbsp;
+          <button (click)="fireCrawl()"
+            style="border-radius: 0; border-color: #348807; font-family: 'IBM Plex Mono', monospace;; font-size: 20px"
+            mat-stroked-button>Run</button>
+        </div>
+        <br>
+      </div>
+    </div>
+
+    <br>
+
+    <div style="border: 1px solid #348807; width: 700px; height: 40px; color: white; margin-bottom: -1px;">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div style="margin-left: 10px;">
+          {{crawling? 'Crawling' : 'Selected'}} : {{selectedSpider?.name}}
+        </div>
+        <div>
+          <button style="color: #348807;" (click)="stopCrawl()" mat-button>stop</button>
+          <button style="color: #348807;" (click)="clearText()" mat-button>clear</button>
+        </div>
+      </div>
+
+    </div>
+    <div id="terminal" style="border: 1px solid #348807; width: 670px; height: 600px; padding: 10px 15px; color: white; overflow-y: scroll; overflow-x: hidden; overflow-wrap: break-word;">
+      <pre>
+        {{text}}
+      </pre>
+    </div>
+  </div>
+
+</div>

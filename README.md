@@ -10,7 +10,7 @@ To get started just install all depentencies for the NodeJS and Angular app :
 
  `npm install`
  
- `cd front/`
+ `cd client/`
  
  `npm install`
 
